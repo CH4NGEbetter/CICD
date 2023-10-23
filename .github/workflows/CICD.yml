@@ -31,14 +31,15 @@ jobs:
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
+      - name: Setup trivy reports directory
+        run: mkdir -p trivy-reports
+
       - name: Run Trivy vulnerability scanner and save the report
         run: |
-          mkdir -p /github/workspace
-          
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
 
-          trivy image --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
-          trivy image --format table -o /github/workspace/report.txt
+          trivy image --format json -o trivy-reports/report.json docker.io/ch4ngebetter/app:${{ github.sha }}
+          trivy image --format table -o trivy-reports/report.txt
         continue-on-error: true
 
       - name: Install Cosign
