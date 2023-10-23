@@ -92,7 +92,7 @@ jobs:
             SLACK_TEXT: |
               Images built and signed
               Name: Li Hao
-              Metriculation: ${{ METRICULATION }}
-              Email: ${{ EMAIL }}
+              Metriculation: ${{ secrets.METRICULATION }}
+              Email: ${{ secrets.EMAIL }}
               Git: https://github.com/CH4NGEbetter/CICD.git
               Image: https://hub.docker.com/r/ch4ngebetter/app
