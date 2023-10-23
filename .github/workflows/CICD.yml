@@ -75,7 +75,7 @@ jobs:
         with:
           slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNELID }}
-          file_path: "report.txt"
+          file_path: "/github/workspace/report.txt"
           initial_comment: 'post by slack-upload-file'
 
 
