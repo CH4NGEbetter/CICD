@@ -49,7 +49,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
             push: true
-            tags: ${{ secret.DOCKERHUB_USERNAME }}/app:latest
+            tags: ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
 
       - uses: MeilCli/slack-upload-file@v3
         with:
