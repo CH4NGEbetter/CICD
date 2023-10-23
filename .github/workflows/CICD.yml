@@ -33,6 +33,8 @@ jobs:
 
       - name: Run Trivy vulnerability scanner and save the report
         run: |
+          curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+          
           trivy --input /github/workspace/report.json --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
           trivy --input /github/workspace/report.json --format table -o /github/workspace/report.txt
         continue-on-error: true
@@ -69,12 +71,6 @@ jobs:
               Email: ${{ secrets.EMAIL }}
               Git: https://github.com/CH4NGEbetter/CICD.git
               Image: https://hub.docker.com/r/ch4ngebetter/app
-
-      - name: List files in working directory
-        run: ls
-
-      - name: Debug report.txt
-        run: cat /github/workspace/report.txt
 
       - name: Upload report to Slack
         uses: MeilCli/slack-upload-file@v3
