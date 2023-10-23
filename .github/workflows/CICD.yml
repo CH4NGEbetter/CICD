@@ -70,6 +70,12 @@ jobs:
               Git: https://github.com/CH4NGEbetter/CICD.git
               Image: https://hub.docker.com/r/ch4ngebetter/app
 
+      - name: List files in working directory
+        run: ls
+
+      - name: Debug report.txt
+        run: cat /github/workspace/report.txt
+
       - name: Upload report to Slack
         uses: MeilCli/slack-upload-file@v3
         with:
