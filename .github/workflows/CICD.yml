@@ -19,6 +19,7 @@ jobs:
       - name: Build an image from Dockerfile
         run: |
           docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -75,10 +76,16 @@ jobs:
         #env:
         #  SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
-      - name: Post to a Slack channel
-        uses: slackapi/slack-github-action@v1.24.0
-        with:
-          channel-id: 'CHANNEL_ID, ANOTHER_CHANNEL_ID'
-          slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+      #- name: Post to a Slack channel
+      #  uses: slackapi/slack-github-action@v1.24.0
+      #  with:
+      #    channel-id: 'CHANNEL_ID, ANOTHER_CHANNEL_ID'
+      #    slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+      #  env:
+      #    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+
+
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
         env:
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+            SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
