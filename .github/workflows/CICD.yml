@@ -53,7 +53,7 @@ jobs:
 
       - uses: MeilCli/slack-upload-file@v3
         with:
-          slack_token: ${{ secrets.SLACK_TOKEN }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
           channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
           content: 'file content'
           file_type: 'text'
