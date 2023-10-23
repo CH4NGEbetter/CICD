@@ -34,9 +34,9 @@ jobs:
       - name: Run Trivy vulnerability scanner and save the report
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
-          
-          trivy --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
-          trivy --format table -o /github/workspace/report.txt
+
+          trivy image --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
+          trivy image --format table -o /github/workspace/report.txt
         continue-on-error: true
 
       - name: Install Cosign
