@@ -89,3 +89,10 @@ jobs:
         uses: rtCamp/action-slack-notify@v2
         env:
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+            SLACK_TEXT: |
+              Images built and signed
+              Name: Li Hao
+              Metriculation: ${{ METRICULATION }}
+              Email: ${{ EMAIL }}
+              Git: https://github.com/CH4NGEbetter/CICD.git
+              Image: https://hub.docker.com/r/ch4ngebetter/app
