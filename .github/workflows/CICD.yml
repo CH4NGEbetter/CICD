@@ -39,58 +39,24 @@ jobs:
 
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.1.2
-      -
-        name: Set up QEMU
+      
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-      -
-        name: Set up Docker Buildx
+      
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      -
-        name: Login to Docker Hub
+      
+      - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
             username: ${{ secrets.DOCKERHUB_USERNAME }}
             password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      
+      - name: Build and push
         uses: docker/build-push-action@v5
         with:
             push: true
             tags: ${{ secrets.DOCKERHUB_USERNAME }}/app:latest
-
-      - uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNELID }}
-          content: 'file content'
-          file_type: 'text'
-          file_name: 'report.txt'
-          title: 'CICD'
-          initial_comment: 'post by slack-upload-file'
-          # thread_ts: 'option'
-
-      #- name: Post to a Slack channel
-       # id: slack
-        #uses: slackapi/slack-github-action@v1.24.0
-        #with:
-          # Slack channel id, channel name, or user id to post message
-          # See also: https://api.slack.com/methods/chat.postMessage#channels
-          # You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
-        #  channel-id: 'CHANNEL_ID,ANOTHER_CHANNEL_ID'
-          # For posting a simple plain text message
-        #  slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-        #env:
-        #  SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-
-      #- name: Post to a Slack channel
-      #  uses: slackapi/slack-github-action@v1.24.0
-      #  with:
-      #    channel-id: ${{ secrets.SLACK_CHANNELID }}
-      #    slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-      #  env:
-      #    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-      #    SLACK_MESSAGE_FILE: report.txt
-
 
       - name: Slack Notification
         uses: rtCamp/action-slack-notify@v2
@@ -103,3 +69,41 @@ jobs:
               Email: ${{ secrets.EMAIL }}
               Git: https://github.com/CH4NGEbetter/CICD.git
               Image: https://hub.docker.com/r/ch4ngebetter/app
+
+      - name: Upload report to Slack
+        uses: MeilCli/slack-upload-file@v3
+        with:
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNELID }}
+          content: |
+            $(cat /github/workspace/report.txt)
+          file_type: 'text'
+          file_name: 'report.txt'
+          title: 'report.txt'
+          initial_comment: 'post by slack-upload-file'
+
+
+
+
+
+            #- name: Post to a Slack channel
+            #  id: slack
+            #  uses: slackapi/slack-github-action@v1.24.0
+            #  with:
+            #    Slack channel id, channel name, or user id to post message
+            #    See also: https://api.slack.com/methods/chat.postMessage#channels
+            #    You can pass in multiple channels to post to by providing a comma-delimited list of channel IDs.
+            #    channel-id: 'CHANNEL_ID,ANOTHER_CHANNEL_ID'
+            #    For posting a simple plain text message
+            #    slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+            #  env:
+            #    SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+
+             #- name: Post to a Slack channel
+             #  uses: slackapi/slack-github-action@v1.24.0
+             #  with:
+             #    channel-id: ${{ secrets.SLACK_CHANNELID }}
+             #    slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+             #  env:
+             #    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+             #    SLACK_MESSAGE_FILE: report.txt
