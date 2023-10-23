@@ -11,6 +11,8 @@ on:
 jobs:
   scan_build_push_sign_and_notify:
     runs-on: ubuntu-latest
+    container:
+        image: docker:24.0.6
 
     steps:
       - name: Checkout
@@ -18,12 +20,15 @@ jobs:
 
       - name: Build an image from Dockerfile
         run: |
-          docker build -t docker.io/my-organization/my-app:${{ github.sha }} .
+          docker build -t docker.io/ch4ngebetter/app:${{ github.sha }} .
+
+      - name: Run Docker container
+        run: docker run ch4ngebetter/app:${{ github.sha }}
 
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'docker.io/my-organization/my-app:${{ github.sha }}'
+          image-ref: 'docker.io/ch4ngebetter/app:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
