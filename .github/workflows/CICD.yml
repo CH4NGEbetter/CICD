@@ -35,8 +35,8 @@ jobs:
         run: |
           curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
           
-          trivy --input /github/workspace/report.json --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
-          trivy --input /github/workspace/report.json --format table -o /github/workspace/report.txt
+          trivy --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
+          trivy --format table -o /github/workspace/report.txt
         continue-on-error: true
 
       - name: Install Cosign
