@@ -31,6 +31,12 @@ jobs:
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
+      - name: Run Trivy vulnerability scanner and save the report
+        run: |
+          trivy --input /github/workspace/report.json --format json -o /github/workspace/report.json docker.io/my-organization/my-app:${{ github.sha }}
+          trivy --input /github/workspace/report.json --format table -o /github/workspace/report.txt
+        continue-on-error: true
+
       - name: Install Cosign
         uses: sigstore/cosign-installer@v3.1.2
       -
@@ -55,10 +61,10 @@ jobs:
       - uses: MeilCli/slack-upload-file@v3
         with:
           slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
+          channel_id: ${{ secrets.SLACK_CHANNELID }}
           content: 'file content'
           file_type: 'text'
-          file_name: 'scanReport.txt'
+          file_name: 'report.txt'
           title: 'CICD'
           initial_comment: 'post by slack-upload-file'
           # thread_ts: 'option'
@@ -79,10 +85,11 @@ jobs:
       #- name: Post to a Slack channel
       #  uses: slackapi/slack-github-action@v1.24.0
       #  with:
-      #    channel-id: 'CHANNEL_ID, ANOTHER_CHANNEL_ID'
+      #    channel-id: ${{ secrets.SLACK_CHANNELID }}
       #    slack-message: "GitHub build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
       #  env:
       #    SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      #    SLACK_MESSAGE_FILE: report.txt
 
 
       - name: Slack Notification
