@@ -12,21 +12,19 @@ jobs:
   my_job:
     runs-on: ubuntu-latest
     steps:
-    - name: Check commit message
-      run: |
-        if [[ "$GITHUB_REF" == "refs/heads/v[0-9]+.[0-9]+" && ! $(git log --format=%B -n 1 $GITHUB_SHA) =~ "#NORUN" ]]; then
-          echo "This step will run if the branch matches and the commit message does not contain #NORUN"
-        else
-          echo "This step will be skipped"
-          exit 0
-        fi
-        
-  scan_build_push_sign_and_notify:
-    runs-on: ubuntu-latest
-    # container:
-    #     image: docker:24.0.6
+      - name: Check commit message
+        run: |
+          if [[ "$GITHUB_REF" == "refs/heads/v[0-9]+.[0-9]+" && ! $(git log --format=%B -n 1 $GITHUB_SHA) =~ "#NORUN" ]]; then
+            echo "This step will run if the branch matches and the commit message does not contain #NORUN"
+          else
+            echo "This step will be skipped"
+            exit 0
+          fi
 
-    steps:
+  # scan_build_push_sign_and_notify:
+    # runs-on: ubuntu-latest
+
+    # steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
 
