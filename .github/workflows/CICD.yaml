@@ -85,3 +85,12 @@ jobs:
               Git: https://github.com/CH4NGEbetter/CICD.git
               Image: https://hub.docker.com/r/ch4ngebetter/app
 
+      - name: Sign image with a key
+        if: success()
+        run: |
+          cosign sign --yes --key env://COSIGN_PRIVATE_KEY "${TAGS}@${DIGEST}"
+        env:
+          TAGS: ${{ steps.docker_meta.outputs.tags }}
+          COSIGN_PRIVATE_KEY: ${{ secrets.COSIGN_PRIVATE_KEY }}
+          COSIGN_PASSWORD: ${{ secrets.COSIGN_PASSWORD }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
