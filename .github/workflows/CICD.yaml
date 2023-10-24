@@ -11,8 +11,8 @@ on:
 jobs:
   scan_build_push_sign_and_notify:
     runs-on: ubuntu-latest
-    container:
-        image: docker:24.0.6
+    # container:
+    #     image: docker:24.0.6
 
     steps:
       - name: Checkout
@@ -26,6 +26,7 @@ jobs:
           format: 'table'
           output: 'report.txt'
           severity: 'CRITICAL, HIGH'
+          exit-code: 1
 
       - name: Slack Notification
         if: failure()
