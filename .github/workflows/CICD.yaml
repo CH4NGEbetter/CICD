@@ -18,9 +18,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4.1.1
 
-      - name: Run Docker container
-        run: docker run ch4ngebetter/app:${{ github.sha }}
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -30,7 +27,25 @@ jobs:
           output: 'report.txt'
           severity: 'CRITICAL'
 
+      - name: Slack Notification
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_MESSAGE: |
+            Scan failed - Fred
+            Failed trivy scan, see uploaded report.
+
+      - name: Upload report to Slack
+        uses: MeilCli/slack-upload-file@v3
+        with:
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+          channel_id: ${{ secrets.SLACK_CHANNELID }}
+          file_path: "report.txt"
+          initial_comment: 'post by slack-upload-file'
+
       - name: Install Cosign
+        if: success()
         uses: sigstore/cosign-installer@v3.1.2
       
       - name: Set up QEMU
@@ -63,10 +78,3 @@ jobs:
               Git: https://github.com/CH4NGEbetter/CICD.git
               Image: https://hub.docker.com/r/ch4ngebetter/app
 
-      - name: Upload report to Slack
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel_id: ${{ secrets.SLACK_CHANNELID }}
-          file_path: "report.txt"
-          initial_comment: 'post by slack-upload-file'
