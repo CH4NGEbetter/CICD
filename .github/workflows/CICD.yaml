@@ -10,7 +10,7 @@ on:
 
 jobs:
   scan_build_push_sign_and_notify:
-    if: ${{ !contains(github.event.commit(0).message, '#NORUN') }}
+    if: ${{ ! contains(github.event.commits[0].message, '#NORUN') }}
     runs-on: ubuntu-latest
 
     steps:
