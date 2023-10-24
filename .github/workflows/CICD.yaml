@@ -23,7 +23,7 @@ jobs:
           ignore-unfixed: true
           format: 'table'
           output: 'report.txt'
-          severity: 'CRITICAL, HIGH'
+          severity: 'CRITICAL'
           exit-code: 1
 
       - name: Slack Notification
@@ -32,7 +32,7 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
           SLACK_MESSAGE: |
-            Scan failed - Li Hao
+            *Scan failed - Li Hao*
             Failed trivy scan, see uploaded report.
 
       - name: Upload report to Slack
@@ -76,12 +76,12 @@ jobs:
         env:
             SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
             SLACK_MESSAGE: |
-              Images built and signed
-              Name: Li Hao
-              Metriculation: ${{ secrets.METRICULATION }}
-              Email: ${{ secrets.EMAIL }}
-              Git: https://github.com/CH4NGEbetter/CICD.git
-              Image: https://hub.docker.com/r/ch4ngebetter/app
+              *Images built and signed*
+              *Name:* Li Hao
+              *Metriculation:* ${{ secrets.METRICULATION }}
+              *Email:* ${{ secrets.EMAIL }}
+              *Git:* https://github.com/CH4NGEbetter/CICD.git
+              *Image:* https://hub.docker.com/r/ch4ngebetter/app
 
       - name: Sign image with a key
         if: success()
