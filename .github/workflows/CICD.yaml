@@ -81,7 +81,7 @@ jobs:
               *Name:* Li Hao
               *Metriculation:* ${{ secrets.METRICULATION }}
               *Email:* ${{ secrets.EMAIL }}
-              *Git:* https://github.com/CH4NGEbetter/CICD.git
+              *Git:* ${{ secrets.REPOSITORY_ADDRESS }}
               *Image:* https://hub.docker.com/r/ch4ngebetter/app
 
       - name: Sign image with a key
